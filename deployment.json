@@ -1,0 +1,14 @@
+{
+  "name" : "jobqueueworker",
+  "display_name" : "JobQueueWorker",
+  "version" : "0.2",
+  "type": ["zray"],
+  "logo": "logo.gif",
+  "eula": "LICENSE.txt",
+  "readme": "README.txt",
+  "dependencies": {
+    "plugin": {
+        "min": "1.0.0"
+    }
+  }
+}
