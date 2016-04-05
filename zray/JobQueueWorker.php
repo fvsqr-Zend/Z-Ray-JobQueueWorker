@@ -23,7 +23,6 @@ class JobQueueWorker
         $status = $context['functionArgs'][0];
         $status = ($status == \ZendJobQueue::OK) ? 'OK' : 'FAILED';
         $storage['workerStatus'][] = array('Status' => $status);
-        error_log(var_export(array('$2storage[workerStatus]' => $storage['workerStatus']), true), 3, '/tmp/jq2');
         $this->workerStatus = true;
     }
     
