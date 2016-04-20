@@ -1,5 +1,5 @@
 <?php
-namespace ZendServerJobQueue;
+namespace ZendServerJobQueueWorker;
 
 class JobQueueWorker
 {
@@ -60,6 +60,11 @@ class JobQueueWorker
         unset($jobInfo['vars']);
         
         $storage['jobInfo']['Detail'] = $jobInfo;
+        
+        $storage['jobDetail'][] = array(
+            'id' => $jobId,
+            'url' =>  $storage['jobInfo']['URL']
+        );
         
         if ($this->workerStatus) return;
         

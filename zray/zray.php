@@ -1,6 +1,6 @@
 <?php
 
-namespace ZendServerJobQueue;
+namespace ZendServerJobQueueWorker;
 
 $zre = new \ZRayExtension('JobQueueWorker');
 $zre->setMetadata(array(
@@ -21,7 +21,7 @@ if (extension_loaded('Zend Job Queue')) {
         $jq = new JobQueueWorker();
         $zre->setEnabledAfter('ZendJobQueue::ZendJobQueue');
         
-        register_shutdown_function('ZendServerJobQueue\shutdown');
+        register_shutdown_function('ZendServerJobQueueWorker\shutdown');
         
         $zre->traceFunction(
             'ZendJobQueue::setCurrentJobStatus',
@@ -33,7 +33,7 @@ if (extension_loaded('Zend Job Queue')) {
         );
         
         $zre->traceFunction(
-            'ZendServerJobQueue\shutdown',
+            'ZendServerJobQueueWorker\shutdown',
             function() {},
             array(
                 $jq,
