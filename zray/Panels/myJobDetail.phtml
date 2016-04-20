@@ -119,17 +119,12 @@ if (typeof(Storage) !== undefined) {
     	
         storageJobWorkerListItems = zray.getStorage('jobListItems');
 
-        console.log ('***');
     	zray.registerDataHandler('JobQueueWorker', 'jobDetail', function(extensionData, requestData) {
 
         	storageJobWorkerListItems.setData(extensionData);
     
         	var data = storageJobWorkerListItems.data;
-        	console.log(storageJobWorkerListItems);
-        	console.log(data);
-        	console.log(data.length)
         	for (i = 0; i < data.length; i++) {
-            	console.log('id ' + data[i].id )
         		$("#jobworker_list").append('<li><a style="cursor:pointer">Get Detail for Job <span class="jobworker_id">' + data[i].id + '</span> -  ' + data[i].url + '</a></li>');
             }
     
