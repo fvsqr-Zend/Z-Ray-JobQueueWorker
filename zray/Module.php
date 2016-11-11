@@ -14,7 +14,7 @@ class Module extends \ZRay\ZRayModule
                 'jobDetail' => false,
             ),
             'panels' => array(
-                'myJobDetail' => array(
+                'customJobDetail' => array(
                     'display' => true,
                     'logo' => 'logo.png',
                     'menuTitle' => 'Job Detail',
