@@ -8,21 +8,20 @@ $zre->setMetadata(array(
     'actionsBaseUrl' => $_SERVER['REQUEST_URI'] 
 ));
 
-function shutdown() {}
+function shutdown() {
+}
 
 if (extension_loaded('Zend Job Queue')) {
- 
     $q = new \ZendJobQueue();
-    
     if ($q->getCurrentJobId()) {
         
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'JobQueueWorker.php';
     
         $jq = new JobQueueWorker();
-        $zre->setEnabledAfter('ZendJobQueue::ZendJobQueue');
+        #$zre->setEnabledAfter('ZendJobQueue::ZendJobQueue');
+        $zre->setEnabledAfter('ZendServerJobQueueWorker\shutdown');
         
         register_shutdown_function('ZendServerJobQueueWorker\shutdown');
-        
         $zre->traceFunction(
             'ZendJobQueue::setCurrentJobStatus',
             function() {},
@@ -31,7 +30,6 @@ if (extension_loaded('Zend Job Queue')) {
                 'workerStatus'
             )
         );
-        
         $zre->traceFunction(
             'ZendServerJobQueueWorker\shutdown',
             function() {},
