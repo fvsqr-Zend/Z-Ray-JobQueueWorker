@@ -39,7 +39,7 @@ class JobQueueWorker
         $jobInfo = $queue->getJobInfo($jobId);
         
         $storage['jobInfo'] = $this->processJobInfo($jobId, $jobInfo);
-        $storage['jobDetail'] = $this->processJobDetail($jobId, $jobInfo);
+        $storage['jobDetail'][] = $this->processJobDetail($jobId, $jobInfo);
         
         if ($this->workerStatus) return;
         $storage['workerStatus'][] = array('Status' => 'Status has not been set in job! Please consider using ZendJobQueue::setCurrentJobStatus() in your worker');
