@@ -6,6 +6,8 @@ class JobQueueWorker
     private $workerStatus = false;
     private $shutdownCalled = false;
     
+    private $jobValueToFilter = ['id', 'status', 'name','script', 'queue_name', 'queue_id', 'predecessor', 'output', 'error','vars'];
+    
     private static function getConstantText($value, $prefix)
     {
         $class = new \ReflectionClass('ZendJobQueue');
@@ -29,7 +31,6 @@ class JobQueueWorker
     public function shutdown($context, &$storage)
     {
         if ($this->shutdownCalled) return;
-        
         $this->shutdownCalled = true;
         
         $queue = new \ZendJobQueue();
@@ -37,37 +38,41 @@ class JobQueueWorker
         $jobId = $queue->getCurrentJobId();
         $jobInfo = $queue->getJobInfo($jobId);
         
-        $storage['jobInfo']['ID'] = array($jobId);
-        $storage['jobInfo']['Name'] = array($jobInfo['name']);
-        $storage['jobInfo']['URL'] = array( $jobInfo['script']);
-        $storage['jobInfo']['Vars'] = array( $jobInfo['vars']);
-        if ($jobInfo['predecessor']) $storage['jobInfo']['Predecessor'] = array( $jobInfo['predecessor']);
-        if ($jobInfo['output']) $storage['jobInfo']['Output'] = array( $jobInfo['output']);
-        if ($jobInfo['error']) $storage['jobInfo']['Error'] = array( $jobInfo['error']);
-        
-        $jobInfo['Queue'] = array('Id' => $jobInfo['queue_id'], 'Name' => $jobInfo['queue_name']);
-        $jobInfo['priority'] = array($this->getConstantText($jobInfo['priority'], 'PRIORITY'));
-        
-        unset($jobInfo['id']);
-        unset($jobInfo['status']);
-        unset($jobInfo['name']);
-        unset($jobInfo['script']);
-        unset($jobInfo['queue_name']);
-        unset($jobInfo['queue_id']);
-        unset($jobInfo['predecessor']);
-        unset($jobInfo['output']);
-        unset($jobInfo['error']);
-        unset($jobInfo['vars']);
-        
-        $storage['jobInfo']['Detail'] = $jobInfo;
-        
-        $storage['jobDetail'][] = array(
-            'id' => $jobId,
-            'url' =>  $storage['jobInfo']['URL']
-        );
+        $storage['jobInfo'] = $this->processJobInfo($jobId, $jobInfo);
+        $storage['jobDetail'][] = $this->processJobDetail($jobId, $jobInfo);
         
         if ($this->workerStatus) return;
-        
         $storage['workerStatus'][] = array('Status' => 'Status has not been set in job! Please consider using ZendJobQueue::setCurrentJobStatus() in your worker');
+    }
+    
+    private function processJobInfo($jobId, $jobInfo) {
+        $info = [];
+        $info['ID'] = array($jobId);
+        $info['Name'] = array($jobInfo['name']);
+        $info['URL'] = array( $jobInfo['script']);
+        $info['Vars'] = array( $jobInfo['vars']);
+        if ($jobInfo['predecessor']) $info['Predecessor'] = array( $jobInfo['predecessor']);
+        if ($jobInfo['output']) $info['Output'] = array( $jobInfo['output']);
+        if ($jobInfo['error']) $info['Error'] = array( $jobInfo['error']);
+        
+        $jobInfo['Queue'] = array('Id' => $jobInfo['queue_id'], 'Name' => $jobInfo['queue_name']);
+        $jobInfo['priority'] = $this->getConstantText($jobInfo['priority'], 'PRIORITY');
+        
+        foreach ($this->jobValueToFilter as $key) {
+            unset ($jobInfo[$key]);
+        }
+        
+        $info['Detail'] = $jobInfo;
+        
+        return $info;
+    }
+    
+    private function processJobDetail($jobId, $jobInfo) {
+        $detail = [
+            'id' => $jobId,
+            'url' => $jobInfo['script']
+        ];
+        
+        return $detail;
     }
 }
