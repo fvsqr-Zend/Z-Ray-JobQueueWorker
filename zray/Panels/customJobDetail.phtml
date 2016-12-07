@@ -200,8 +200,6 @@ jQuery.ajaxSetup({
 });
 
 var ngJobWorker = function() {
-//jQuery.getScript( "http://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js", function( data, textStatus, jqxhr ){
-//var loadNg = function() {
 
 	var JobWorkerApp = angular.module('JobWorkerApp',[]).controller('JobWorkerCtrl', function($scope) {
 
@@ -212,8 +210,6 @@ var ngJobWorker = function() {
 				$scope.loggedIn = true;
         	});
         });
-
-        //$scope.joblist = storageJobWorkerListItems.data;
 
         $scope.setJobList = function(data) {
             this.joblist = data;
@@ -421,11 +417,6 @@ var ngJobWorker = function() {
 
         return statusIdToLabel;
     });
-
-    
-    //angular.element(document).ready(function() {
-    //    angular.bootstrap(document, ['JobWorkerApp']);
-    //});
 }
 
 var JobWorkerDetail = {
@@ -459,13 +450,11 @@ var JobWorkerDetail = {
     	this.webApi(url)
     	.done(function() {
     		$("#zend_server_login, #job-list-simple").hide();
-    		//$("#jobworker-list-full, td.webapidata span").show();
             $('td.webapidata').removeClass('loading');
     		done();
     	})
     	.fail(function() {
     		$("#zend_server_login, #job-list-simple").show();
-    		//$("#jobworker-list-full").hide();
 
     		setTimeout(function(){ 
     			that.isLoggedIn(done); 
@@ -486,12 +475,13 @@ var JobWorkerDetail = {
 	}
 };
 
-var ngJobWorkerStarted = false;
 var jobWorkerListData;
+var ngJobWorkerStarted = false;
+
 (function () {
 	ngJobWorkerStarted = true;
 	if ((typeof ngJobStarted == 'undefined' || !ngJobStarted)){
-    	jQuery.getScript( "http://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js", function(){
+    	jQuery.getScript("http://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js", function(){
     		ngJobWorker();
     		if (typeof ngJob == 'function') ngJob();
 
@@ -508,26 +498,7 @@ var jobWorkerListData;
             });
         });
     }
-})();
 
-(function() {
-
-	
-	/*var url = ZSbaseUrl.protocol + '//' + ZSbaseUrl.hostname + ':' + ZSbaseUrl.port + '/ZendServer';
-	$("#zend_server_login button, #zend_server_login a").on( "click", function() {
-		window.open(url, '_blank');
-	});
-*/
-	//JobWorkerDetail.isLoggedIn( function() {} );
-
-	//storageJobWorkerListItems = zray.getStorage('jobListItems');
-
-	/*
-    zray.registerDataHandler('JobQueueWorker', 'jobDetail', function(extensionData, requestData) {
-    	storageJobWorkerListItems.setData(extensionData);
-    	debugger;
-    });
-    */
 	zray.registerDataHandler('JobQueueWorker', 'jobDetail', function(extensionData, requestData) {
 		jobWorkerListData = extensionData;
     	if (!$('#JobWorkerCtrl').scope || !$('#JobWorkerCtrl').scope().setJobList) return;
