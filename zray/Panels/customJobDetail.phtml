@@ -141,7 +141,6 @@ ZSbaseUrl.href = window.zendDevBar.baseUrl;
           <tr>
             <th>Job ID</th>
             <th>URL</th>
-            <th>Name</th>
             <th style="width: 170px;">Scheduled</th>
             <th style="width: 170px;">Start Time</th>
             <th style="width: 170px;">End Time</th>
@@ -153,7 +152,6 @@ ZSbaseUrl.href = window.zendDevBar.baseUrl;
             <tr ng-repeat-start="job in joblist" jobworkerrow jobid="{{job.id}}">
           	  <td class="job_id">{{ job.id }}</td>
               <td class="job_url">{{ job.url }}</td>
-              <td class="job_name">{{ job.info.Options.name }}</td>
               <td class="job_scheduled_start_time" ng-class="{loading: loading}"><span class="" ng-hide="loading" ng-bind-html="jobScheduledStartTime | formattime | trust"></span></td>
               <td class="job_start_time" ng-class="{loading: loading}"><span class="" ng-hide="loading" ng-bind-html="jobStartTime | formattime | trust"></span></td>
               <td class="job_end_time" ng-class="{loading: loading}"><span class="" ng-hide="loading" ng-bind-html="jobEndTime | formattime | trust"></span></td>
@@ -164,7 +162,7 @@ ZSbaseUrl.href = window.zendDevBar.baseUrl;
               </td>
             </tr>
             <tr ng-if="job.expanded" ng-repeat-end="">
-              <td colspan="8"><jobworkerdetail jobid="{{job.id}}"></jobworkerdetail></td>
+              <td colspan="7"><jobworkerdetail jobid="{{job.id}}"></jobworkerdetail></td>
             </tr>
           </tbody>
         </table>
