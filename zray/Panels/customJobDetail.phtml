@@ -123,14 +123,6 @@ ZSbaseUrl.href = window.zendDevBar.baseUrl;
         background-color: #000 !important;
         border-radius: 4px !important;
     }
-    
-    #zend-dev-bar #custom-panels .zdb-toolbar-detail {
-        bottom: -44px !important;
-    }
-    
-    #zend-dev-bar, #zend-dev-bar #custom-panels {
-        height: 36px !important;
-    }
 </style>
   
 <div ng-controller="JobWorkerCtrl" id="JobWorkerCtrl"> 
@@ -501,6 +493,7 @@ var ngJobWorkerStarted = false;
             angular.element(document).ready(function() {
                 angular.bootstrap(document, apps);
                 if (jobWorkerListData) $('#JobWorkerCtrl').scope().setJobList(jobWorkerListData);
+                if (jobListData && $('#JobCtrl').scope && $('#JobCtrl').scope().setJobList) $('#JobCtrl').scope().setJobList(jobListData);
             });
         });
     }
